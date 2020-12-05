@@ -47,11 +47,11 @@ class App extends Component {
     const { id, name, email, entries, joined } = data
     this.setState({
       user: {
-        id,
-        name,
-        email,
-        entries,
-        joined
+        id: id,
+        name: name,
+        email: email,
+        entries: entries,
+        joined: joined
       }
     })
   }
@@ -67,7 +67,6 @@ class App extends Component {
       rightCol: width - (clarifaiFace.right_col * width),
       bottomRow: height - (clarifaiFace.bottom_row * height)
     }
-    
   }
 
   displayFaceBox = box => {
@@ -85,7 +84,7 @@ class App extends Component {
       this.state.input)
       .then(response => {
         if (response) {
-          fetch('http://localhost:2002/image', {
+          fetch('http://localhost:3000/image', {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -94,8 +93,8 @@ class App extends Component {
           })
             .then(response => response.json())
             .then(count => {
-              // this.setState(Object.assign(this.state.user, { entries: count.entries }))
-              this.setState({user: count})
+              this.setState(Object.assign(this.state.user, { entries: count }))
+              // this.setState({entries: count})
             })
 
         }
@@ -114,7 +113,7 @@ class App extends Component {
   }
 
   render () {
-    const { isSignedIn, imageUrl, route, box } = this.state
+    const { isSignedIn, imageUrl, route, box, user } = this.state
     return (
       <div className="App">
         <Particles
@@ -126,8 +125,8 @@ class App extends Component {
             ? <React.Fragment>
                 <Logo />
                 <Rank
-                  name={this.state.user.name}
-                  entries={this.state.user.entries}
+                  name={user.name}
+                  entries={user.entries}
                 />
                 <ImageLinkForm
                   onInputChange={this.onInputChange}
